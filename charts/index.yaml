@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  openresty-art:
+  - apiVersion: v2
+    appVersion: 1.19.9.1-centos-rpm
+    created: "2026-11-22T02:24:15.095268099+07:00"
+    description: A Helm chart for Kubernetes by Vanya
+    digest: e085b6608d193c7474f984b09c5ff66585f62662d8f0c723382c47e4a3ad99c7
+    home: https://github.com/<ТВОЙ_ЛОГИН>/helm-charts
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - email: ivandorokhovnikolaevich@gmail.com
+      name: Ivan Dorokhov
+    name: openresty-art
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/Dorokhov.Ivan/helm-charts/main/charts/openresty-art-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-11-22T02:24:15.093851247+07:00"
