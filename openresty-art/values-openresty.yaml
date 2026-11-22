@@ -1,0 +1,22 @@
+fullnameOverride: "openresty"
+
+application:
+  replicaCount: 2
+
+service:
+  type: NodePort
+  nodePort: 31002
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: openresty.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+html:
+  index: |-
+    <html><head><meta charset="UTF-8"></head>
+    <body><h1>Release 1: openresty, 2 replicas</h1></body></html>

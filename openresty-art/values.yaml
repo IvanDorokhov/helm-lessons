@@ -1,0 +1,96 @@
+# Переопределить имя чарта (по умолчанию берётся из Chart.yaml)
+nameOverride: ""
+# Полностью задать имя ресурсов (иначе <релиз>-<чарт>)
+fullnameOverride: ""
+
+# Параметры Deployment
+application:
+  # Добавить аннотации stakater reloader (перезапуск при изменении ConfigMap)
+  reloader: false
+  # Количество подов
+  replicaCount: 1
+  # Сколько старых ReplicaSet хранить для отката
+  revisionHistoryLimit: 3
+  # Аннотации пода, например для Prometheus
+  podAnnotations: {}
+  # Секреты для доступа к приватному registry, например:
+  # - name: mySecret
+  imagePullSecrets: []
+  image:
+    repository: openresty/openresty
+    # Если пусто, используется centos-rpm
+    tag: "centos-rpm"
+    pullPolicy: IfNotPresent
+  # readinessProbe и livenessProbe в формате Kubernetes
+  probe:
+    readinessProbe:
+      httpGet:
+        path: /
+        port: http
+    livenessProbe:
+      httpGet:
+        path: /
+        port: http
+  # Ресурсы контейнера (limits/requests). По умолчанию без ограничений
+  resources: {}
+
+# Параметры Service
+service:
+  # Тип сервиса: ClusterIP или NodePort
+  type: ClusterIP
+  port: 80
+  # Порт ноды для NodePort (30000-32767). Пусто — выберет Kubernetes
+  nodePort: ""
+  # Имя порта (необязательно)
+  name: ""
+
+# Параметры Ingress
+ingress:
+  enabled: false
+  # Имя ingress-класса (kubectl get ingressclass)
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+# Конфигурация nginx. Можно подменить: --set-file conf.defaultConf=my.conf
+conf:
+  defaultConf: |-
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            root   /usr/local/openresty/nginx/html;
+            index  index.html index.htm;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/local/openresty/nginx/html;
+        }
+    }
+
+# HTML-файлы. Ключ = имя файла без .html
+# Добавить/заменить: --set-file html.<имя>=path/to/file.html
+html:
+  index: |-
+    <html>
+      <head>
+        <title>Тестовая страница</title>
+        <meta charset="UTF-8">
+      </head>
+      <body>
+        <h1>Тестовая страница</h1>
+      </body>
+    </html>
+  50x: |-
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="UTF-8"><title>Error</title></head>
+    <body><h1>An error occurred.</h1></body>
+    </html>
