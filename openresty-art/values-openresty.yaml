@@ -1,7 +1,7 @@
 fullnameOverride: "openresty"
 
 application:
-  replicaCount: 2
+  replicaCount: 4
 
 service:
   type: NodePort
